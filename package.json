@@ -1,0 +1,24 @@
+{
+  "name": "flying-eagle-ai-avatar-course",
+  "version": "0.10.0",
+  "private": true,
+  "packageManager": "pnpm@11.19.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "test": "node --test course/tests/local-environment.test.mjs && pnpm --recursive --if-present test",
+    "test:course": "node --test course/tests/local-environment.test.mjs",
+    "typecheck": "pnpm --recursive --if-present typecheck",
+    "build": "pnpm --filter @flying-eagle/web build",
+    "verify": "pnpm test && pnpm typecheck && pnpm build",
+    "local:start": "node course/tools/local-environment.mjs start",
+    "local:bootstrap": "pnpm --filter @flying-eagle/api local:bootstrap",
+    "local:setup": "pnpm local:start && pnpm local:bootstrap",
+    "local:status": "node course/tools/local-environment.mjs status",
+    "local:stop": "node course/tools/local-environment.mjs stop"
+  },
+  "devDependencies": {
+    "supabase": "2.114.0"
+  }
+}

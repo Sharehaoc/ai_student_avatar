@@ -1,0 +1,27 @@
+{
+  "name": "@flying-eagle/api",
+  "version": "0.10.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts",
+    "local:bootstrap": "tsx src/scripts/local-bootstrap.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@flying-eagle/contracts": "workspace:*",
+    "@hono/node-server": "2.1.0",
+    "hono": "4.13.1",
+    "jose": "6.2.8",
+    "livekit-server-sdk": "2.17.0",
+    "postgres": "3.4.9"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.3",
+    "tsx": "4.23.12",
+    "typescript": "7.0.2",
+    "vitest": "4.1.10"
+  }
+}

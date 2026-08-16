@@ -1,0 +1,23 @@
+[project]
+name = "flying-eagle-voice-agent"
+version = "0.10.0"
+requires-python = ">=3.11"
+dependencies = [
+  "aiohttp==3.14.3",
+  "json-repair==0.60.1",
+  "livekit-agents==1.6.9",
+  "livekit-plugins-openai==1.6.9",
+  "livekit-plugins-silero==1.6.9",
+  "livekit-plugins-soniox==1.6.9",
+  "OpenCC==1.4.1",
+  "openai==2.54.0",
+  "python-dotenv==1.2.2",
+  "websockets==15.0.1",
+]
+
+[project.scripts]
+flying-eagle-voice-agent = "voice_agent.worker:run_worker"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

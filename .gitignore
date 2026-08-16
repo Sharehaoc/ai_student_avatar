@@ -1,0 +1,36 @@
+.DS_Store
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# JavaScript / TypeScript
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+
+# App build output
+.vite/
+.next/
+
+# Local tools and exports
+.pnpm-store/
+.playwright-cli/
+exports/
+output/
+tmp/
+.local/
+
+# Supabase local runtime state
+supabase/.temp/
+supabase/.branches/

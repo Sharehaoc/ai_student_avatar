@@ -1,0 +1,2 @@
+-- 登入帳號與租戶資料由本機 bootstrap 透過 Auth Admin API 建立。
+-- 不直接寫入 auth.users，避免綁定 Supabase Auth 的內部資料表結構。
