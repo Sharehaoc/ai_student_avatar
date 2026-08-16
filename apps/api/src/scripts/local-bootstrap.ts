@@ -57,6 +57,7 @@ function readStatus(): LocalStatus {
     cwd: projectRoot,
     encoding: "utf8",
     env: process.env,
+    shell: process.platform === "win32",
   });
   if (result.status !== 0) {
     throw new Error("讀不到本機 Supabase，請先執行 pnpm local:start。");
