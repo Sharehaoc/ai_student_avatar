@@ -1,5 +1,29 @@
 # DEV LOG
 
+## 2026-08-16 — Session 05：隔離個人 Voice Agent 派送
+
+### 改動摘要
+將本機 LiveKit Agent 名稱改為 Howard 專屬名稱，避免共用 LiveKit 專案中的不同學生 Worker 互相接走通話工作。將先前卡住的本機測試通話與入場名額標記為失敗並保留紀錄，再重新啟動 Core API 與 Voice Agent。
+
+### 修改檔案
+- `.env` — 將 `LIVEKIT_AGENT_NAME` 改為本機專屬名稱；此檔案不納入 Git。
+- 本機 Supabase — 將 5 筆 `PENDING`／`CONNECTING` 測試通話及 2 筆占用中的 admission 標記為 `FAILED`，未刪除對話紀錄。
+- `DEV_LOG.md` — 新增本次派送隔離與驗證紀錄。
+
+### 驗證結果
+- Core API 健康檢查回應 HTTP 200；8080、8081、8082 連接埠皆正常監聽。
+- Voice Agent 已使用 Howard 專屬 Agent 名稱向 LiveKit 日本區完成註冊。
+- 本機解碼測試確認 Core 產生的 Token 使用相同 Agent 名稱。
+- 資料庫中未再存在 `PENDING`、`CONNECTING`、`ACTIVE` 通話或未過期的 `RESERVED`／`ACTIVE` admission。
+- 瀏覽器重新載入後恢復顯示「開始語音對話」。
+- `.env` 仍受 Git 排除規則保護，未將 API Key、密碼或 Token 加入版本控制。
+
+### 尚未完成／未驗證
+- 為避免未經確認使用麥克風及產生外部服務費用，尚未開始真實通話；STT、AI 與 TTS 完整流程仍待驗證。
+
+### 下一步
+- [ ] 使用者允許麥克風及外部服務測試費用後，開始一通短時間測試通話。
+
 ## 2026-08-16 — Session 04：開啟本機語音服務
 
 ### 改動摘要
