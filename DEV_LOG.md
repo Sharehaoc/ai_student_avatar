@@ -1,5 +1,24 @@
 # DEV LOG
 
+## 2026-08-16 — Session 02：載入專屬 API Key
+
+### 改動摘要
+從學生提供的 Word 檔讀取專屬服務設定，僅寫入 Git 排除的本機 `.env`，供後續 Core API 與 Voice Agent 使用。
+
+### 修改檔案
+- `.env` — 寫入 LiveKit、Soniox、OpenAI、MiniMax 與 MiniMax Voice ID 的專屬設定；此檔案不納入 Git。
+- `DEV_LOG.md` — 新增本次安全設定紀錄，不記錄任何 Key 值。
+
+### 驗證結果
+- 已確認七個指定環境變數都有值。
+- 已確認 `.env` 未被 Git 追蹤，且符合 `.gitignore` 排除規則。
+
+### 尚未完成／未驗證
+- 未啟動 Core API 或 Voice Agent，尚未進行外部 API 或語音通話測試。
+
+### 下一步
+- [ ] 由學生確認後，啟動 Core API 與 Voice Agent，驗證專屬服務設定。
+
 ## 2026-08-16 — Session 01：修正 Windows 本機 Supabase 初始化
 
 ### 改動摘要
