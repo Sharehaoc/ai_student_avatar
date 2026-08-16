@@ -17,4 +17,5 @@
 - 尚未啟動 Core API 或 Voice Agent；本階段只會啟動 Web 前端。
 
 ### 下一步
-- [ ] 初始化本機帳號與 `.env`，再只啟動 Web 前端。
+- [x] 已只啟動 Web 前端並確認登入、註冊與管理者登入後的語音介面可顯示。
+- [ ] 收到專屬 API Key 後，再啟動 Core API 與 Voice Agent 進行語音通話驗證。
