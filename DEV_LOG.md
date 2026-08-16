@@ -1,5 +1,32 @@
 # DEV LOG
 
+## 2026-08-16 — Session 07：調整本機語音輸出音量
+
+### 改動摘要
+新增 MiniMax 語音輸出音量設定，並依 Howard 指定將本機值設為 5。設定會同時套用至 HTTP 與 WebSocket 語音合成，避免只在其中一種傳輸方式生效。
+
+### 修改檔案
+- `apps/voice-agent/src/voice_agent/runtime_config.py` — 讀取並驗證 `MINIMAX_TTS_VOLUME` 必須大於 0 且不超過 10。
+- `apps/voice-agent/src/voice_agent/providers/minimax_protocol.py` — 將設定的音量寫入 MiniMax 請求。
+- `apps/voice-agent/src/voice_agent/providers/minimax_provider.py` — 將音量帶入 HTTP 與 WebSocket 語音合成。
+- `apps/voice-agent/src/voice_agent/worker.py`、`apps/voice-agent/src/voice_agent/preview_server.py` — 將本機設定交給語音提供者。
+- `apps/voice-agent/tests/*` — 新增音量範圍與傳遞的回歸測試。
+- `.env.example` — 記錄安全的預設值與有效範圍。
+- `.env` — 本機值設為 5；此檔案受 Git 排除，不會提交。
+
+### 驗證結果
+- 修正前的回歸測試已確認失敗，證實音量設定原本不會傳到語音服務。
+- Voice Agent 全部 53 項測試通過，Python 語法編譯檢查通過。
+- 已重新啟動 Voice Agent；8081、8082 連接埠正常監聽，且已向 Howard 專屬 LiveKit Agent 完成註冊。
+- 已讀取本機設定並確認 `MINIMAX_TTS_VOLUME` 為 5。
+- `.env` 仍受 Git 排除規則保護，未納入本次提交。
+
+### 尚未完成／未驗證
+- 尚未發起新的真實語音合成，因此仍需由 Howard 實聽確認音量與是否破音。
+
+### 下一步
+- [ ] Howard 重新連線後說一句短句，確認音量與音質。
+
 ## 2026-08-16 — Session 06：修正 Voice Agent 外掛主程序註冊
 
 ### 改動摘要

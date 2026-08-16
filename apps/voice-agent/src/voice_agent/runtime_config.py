@@ -29,6 +29,30 @@ def _strict_bool(values: Mapping[str, str], name: str, default: bool) -> bool:
     raise ValueError(f"{name} must be true or false")
 
 
+def _bounded_float(
+    values: Mapping[str, str],
+    name: str,
+    default: float,
+    *,
+    minimum_exclusive: float,
+    maximum_inclusive: float,
+) -> float:
+    raw = values.get(name)
+    if raw is None or not str(raw).strip():
+        return default
+    try:
+        value = float(str(raw).strip())
+    except ValueError as error:
+        raise ValueError(
+            f"{name} must be a number between {minimum_exclusive} and {maximum_inclusive}"
+        ) from error
+    if not minimum_exclusive < value <= maximum_inclusive:
+        raise ValueError(
+            f"{name} must be a number between {minimum_exclusive} and {maximum_inclusive}"
+        )
+    return value
+
+
 def _secure_url(raw: str, *, name: str, secure_scheme: str) -> str:
     parsed = urlparse(raw)
     is_local_http = (
@@ -59,6 +83,7 @@ class VoiceAgentEnvironment:
     minimax_ws_url: str
     minimax_runtime: MiniMaxRuntime
     minimax_simplified_glyphs: bool
+    minimax_tts_volume: float
     voice_preview_host: str
     voice_preview_port: int
 
@@ -124,6 +149,13 @@ class VoiceAgentEnvironment:
                 values,
                 "MINIMAX_TTS_SIMPLIFIED_GLYPH",
                 True,
+            ),
+            minimax_tts_volume=_bounded_float(
+                values,
+                "MINIMAX_TTS_VOLUME",
+                1.0,
+                minimum_exclusive=0.0,
+                maximum_inclusive=10.0,
             ),
             voice_preview_host=preview_host,
             voice_preview_port=preview_port,

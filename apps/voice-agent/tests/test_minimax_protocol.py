@@ -15,6 +15,7 @@ class MiniMaxProtocolTests(unittest.TestCase):
             voice_id="voice-clone-1",
             model="speech-02-turbo",
             sample_rate=24_000,
+            volume=5.0,
         )
 
         self.assertTrue(payload["stream"])
@@ -24,6 +25,7 @@ class MiniMaxProtocolTests(unittest.TestCase):
             "format": "pcm",
             "channel": 1,
         })
+        self.assertEqual(payload["voice_setting"]["vol"], 5.0)
 
     def test_sse_decoder_handles_arbitrary_network_chunk_boundaries(self):
         events = [

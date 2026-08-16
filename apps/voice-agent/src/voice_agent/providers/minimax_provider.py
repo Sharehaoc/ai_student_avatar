@@ -44,6 +44,7 @@ class MiniMaxOptions:
     runtime: str
     pronunciation_fixes: dict[str, str]
     use_simplified_glyphs: bool
+    volume: float
     sample_rate: int = 24_000
 
 
@@ -58,6 +59,7 @@ class MiniMaxProvider:
         api_host: str,
         ws_url: str,
         runtime: str,
+        volume: float,
         use_simplified_glyphs: bool,
     ) -> None:
         self._api_key = api_key
@@ -65,6 +67,7 @@ class MiniMaxProvider:
         self._api_host = api_host
         self._ws_url = ws_url
         self._runtime = runtime
+        self._volume = volume
         self._use_simplified_glyphs = use_simplified_glyphs
 
     def create(self, context: VoiceSessionContext):
@@ -77,6 +80,7 @@ class MiniMaxProvider:
                 voice_id=context.voice_id,
                 model=context.voice_model,
                 runtime=select_minimax_runtime(context.voice_model, self._runtime),
+                volume=self._volume,
                 pronunciation_fixes=dict(context.pronunciation_fixes),
                 use_simplified_glyphs=self._use_simplified_glyphs,
             )
@@ -199,6 +203,7 @@ async def _stream_http_audio(
         voice_id=options.voice_id,
         model=options.model,
         sample_rate=options.sample_rate,
+        volume=options.volume,
     )
     try:
         async with session.post(
@@ -388,6 +393,7 @@ class MiniMaxWebSocketStream(_MiniMaxStreamingBase):
             **build_audio_settings(
                 voice_id=self._options.voice_id,
                 sample_rate=self._options.sample_rate,
+                volume=self._options.volume,
             ),
         })
         await self._wait_until_started(websocket)

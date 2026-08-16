@@ -44,6 +44,7 @@ class ProviderAdapterTests(unittest.IsolatedAsyncioTestCase):
                 api_host="https://api.minimax.io",
                 ws_url="wss://api.minimax.io/ws/v1/t2a_v2",
                 runtime="auto",
+                volume=5.0,
                 use_simplified_glyphs=True,
             ),
         ).build_runtime(context)
@@ -53,6 +54,7 @@ class ProviderAdapterTests(unittest.IsolatedAsyncioTestCase):
         self.assertIsInstance(runtime.tts, MiniMaxTTS)
         self.assertEqual(runtime.tts.model, "speech-2.6-hd")
         self.assertEqual(runtime.tts.runtime, "ws")
+        self.assertEqual(runtime.tts._options.volume, 5.0)
 
         for component in (runtime.tts, runtime.llm, runtime.stt):
             close = getattr(component, "aclose", None)

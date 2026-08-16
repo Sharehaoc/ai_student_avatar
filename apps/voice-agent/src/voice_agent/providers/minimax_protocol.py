@@ -45,13 +45,18 @@ def build_t2a_payload(
     voice_id: str,
     model: str,
     sample_rate: int,
+    volume: float = 1.0,
 ) -> dict[str, Any]:
     return {
         "text": text,
         "model": model,
         "stream": True,
         "stream_options": {"exclude_aggregated_audio": True},
-        **build_audio_settings(voice_id=voice_id, sample_rate=sample_rate),
+        **build_audio_settings(
+            voice_id=voice_id,
+            sample_rate=sample_rate,
+            volume=volume,
+        ),
     }
 
 

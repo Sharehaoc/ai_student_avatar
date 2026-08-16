@@ -82,6 +82,7 @@ async def synthesize_preview(
         api_host=environment.minimax_api_host,
         ws_url=environment.minimax_ws_url,
         runtime=environment.minimax_runtime,
+        volume=environment.minimax_tts_volume,
         use_simplified_glyphs=environment.minimax_simplified_glyphs,
     )
     context = VoiceSessionContext(

@@ -75,6 +75,19 @@ class VoiceAgentEnvironmentTests(unittest.TestCase):
                 dict(BASE_ENV, MINIMAX_TTS_RUNTIME="unknown")
             )
 
+    def test_minimax_tts_volume_must_be_within_provider_range(self):
+        parsed = VoiceAgentEnvironment.from_mapping(
+            dict(BASE_ENV, MINIMAX_TTS_VOLUME="5")
+        )
+        self.assertEqual(parsed.minimax_tts_volume, 5.0)
+
+        for value in ("0", "10.1", "not-a-number"):
+            with self.subTest(value=value):
+                with self.assertRaisesRegex(ValueError, "MINIMAX_TTS_VOLUME"):
+                    VoiceAgentEnvironment.from_mapping(
+                        dict(BASE_ENV, MINIMAX_TTS_VOLUME=value)
+                    )
+
 
 if __name__ == "__main__":
     unittest.main()
