@@ -1,5 +1,27 @@
 # DEV LOG
 
+## 2026-08-16 — Session 10：更新本機 LiveKit 連線設定
+
+### 改動摘要
+依 Howard 提供的新 LiveKit 設定，更新本機 Voice Agent 與 Core API 共用的連線環境變數，並重啟兩個服務使設定生效。
+
+### 修改檔案
+- `.env` — 更新 LiveKit URL、API Key 與 API Secret；此檔案受 Git 排除，不會提交。
+- `DEV_LOG.md` — 記錄設定變更與驗證，不記錄任何 Key 值。
+
+### 驗證結果
+- 確認更新前沒有進行中的通話或占用名額。
+- Core API 健康檢查回應 HTTP 200。
+- Voice Agent 已向新的 LiveKit 端點完成註冊，8081、8082 連接埠正常監聽。
+- `.env` 已確認受 Git 排除規則保護。
+
+### 尚未完成／未驗證
+- 未建立新的真實語音通話，因此尚未驗證新 LiveKit 專案中的完整瀏覽器連線與語音流程。
+- Windows 尚未安裝系統 Node.js；Core API 暫以專案已使用的內建 Node 執行環境維持啟動。
+
+### 下一步
+- [ ] Howard 重新整理網頁後，重新連線確認新的 LiveKit 設定可建立通話。
+
 ## 2026-08-16 — Session 09：提高本機語音輸出音量
 
 ### 改動摘要
