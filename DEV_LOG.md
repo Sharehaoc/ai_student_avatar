@@ -1,5 +1,26 @@
 # DEV LOG
 
+## 2026-08-16 — Session 03：啟動本機完整服務
+
+### 改動摘要
+建立專案專用 Python 環境並以鎖定檔安裝 Voice Agent 依賴。修正 LiveKit Silero 外掛在背景執行緒才載入，導致 Voice Agent 預熱失敗的問題。
+
+### 修改檔案
+- `.env` — 補齊課程提供的本機預設設定與內部 Token；此檔案不納入 Git。
+- `apps/voice-agent/src/voice_agent/worker.py` — 在主執行緒載入 Silero 外掛，避免背景程序預熱時的外掛註冊錯誤。
+- `DEV_LOG.md` — 新增本次服務啟動與修正紀錄。
+
+### 驗證結果
+- `pnpm install --frozen-lockfile` 已確認 Node.js 鎖定依賴。
+- Core API 測試：50 項通過。
+- Voice Agent 測試：51 項通過，且語法編譯檢查通過。
+
+### 尚未完成／未驗證
+- 尚未要求瀏覽器使用麥克風，未進行真實語音通話驗收。
+
+### 下一步
+- [ ] 使用者允許麥克風後，驗證登入、通話、逐字稿與語音回覆流程。
+
 ## 2026-08-16 — Session 02：載入專屬 API Key
 
 ### 改動摘要

@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 from dotenv import find_dotenv, load_dotenv
+from livekit.plugins import silero
 
 from voice_agent.core_client import CoreApiClient
 from voice_agent.orchestrator import VoiceSessionOrchestrator
@@ -130,8 +131,6 @@ def is_session_participant(expected_identity: str, participant: Any) -> bool:
 
 
 def _prewarm(process) -> None:
-    from livekit.plugins import silero
-
     process.userdata["vad"] = silero.VAD.load(
         min_silence_duration=1.2,
         prefix_padding_duration=0.3,
@@ -142,7 +141,6 @@ def _prewarm(process) -> None:
 
 async def voice_agent_entrypoint(job_context) -> None:
     from livekit.agents import Agent, AgentSession, room_io
-    from livekit.plugins import silero
 
     environment = VoiceAgentEnvironment.from_environment()
     core = CoreApiClient(
