@@ -14,6 +14,8 @@
 - `pnpm install --frozen-lockfile` 已確認 Node.js 鎖定依賴。
 - Core API 測試：50 項通過。
 - Voice Agent 測試：51 項通過，且語法編譯檢查通過。
+- 本機 Supabase：8 個容器皆正常執行；Web 與 Core API 健康檢查皆回應 HTTP 200。
+- Voice Agent 已註冊 LiveKit，且本機 8081、8082 連接埠正常監聽。
 
 ### 尚未完成／未驗證
 - 尚未要求瀏覽器使用麥克風，未進行真實語音通話驗收。
