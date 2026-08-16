@@ -4,6 +4,7 @@ from types import SimpleNamespace
 from voice_agent.worker import (
     SessionOutcome,
     build_message_event,
+    dispatch_metadata_for_job,
     is_session_participant,
     pipeline_error_payload,
     pipeline_status_payload,
@@ -29,6 +30,22 @@ class FakeChatMessage:
 
 
 class WorkerHelperTests(unittest.TestCase):
+    def test_dispatch_metadata_is_available_before_a_participant_joins(self):
+        job_context = SimpleNamespace(
+            job=SimpleNamespace(
+                metadata=(
+                    '{"tenant_id":"11111111-1111-4111-8111-111111111111",'
+                    '"conversation_id":"22222222-2222-4222-8222-222222222222",'
+                    '"visitor_user_id":"33333333-3333-4333-8333-333333333333",'
+                    '"persona_version_id":"44444444-4444-4444-8444-444444444444"}'
+                )
+            )
+        )
+
+        metadata = dispatch_metadata_for_job(job_context)
+
+        self.assertEqual(metadata.conversation_id, "22222222-2222-4222-8222-222222222222")
+
     def test_provider_error_remains_failed_after_visitor_disconnects(self):
         outcome = SessionOutcome()
         outcome.mark_active()

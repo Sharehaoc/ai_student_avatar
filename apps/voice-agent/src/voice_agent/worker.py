@@ -130,6 +130,10 @@ def is_session_participant(expected_identity: str, participant: Any) -> bool:
     return str(getattr(participant, "identity", "")).strip() == expected_identity
 
 
+def dispatch_metadata_for_job(job_context: Any) -> DispatchMetadata:
+    return DispatchMetadata.from_json(job_context.job.metadata)
+
+
 def _prewarm(process) -> None:
     process.userdata["vad"] = silero.VAD.load(
         min_silence_duration=1.2,
@@ -194,11 +198,11 @@ async def voice_agent_entrypoint(job_context) -> None:
         if not str(job_context.room.name).startswith("eagle-"):
             raise ValueError("voice room namespace is invalid")
 
+        metadata = dispatch_metadata_for_job(job_context)
         await job_context.connect()
         participant = await job_context.wait_for_participant()
         participant_metadata = DispatchMetadata.from_json(participant.metadata)
-        dispatch_metadata = DispatchMetadata.from_json(job_context.job.metadata)
-        participant_metadata.assert_matches(dispatch_metadata)
+        participant_metadata.assert_matches(metadata)
         metadata = participant_metadata
         job_context.log_context_fields = {
             "conversation_id": metadata.conversation_id,
