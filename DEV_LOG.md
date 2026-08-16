@@ -4,6 +4,7 @@
 
 ### 改動摘要
 從學生提供的 Word 檔讀取專屬服務設定，僅寫入 Git 排除的本機 `.env`，供後續 Core API 與 Voice Agent 使用。
+修復寫入格式造成的本機 `VITE_*` 欄位遺失，並以既有 `local:bootstrap` 恢復 Supabase 前端設定。
 
 ### 修改檔案
 - `.env` — 寫入 LiveKit、Soniox、OpenAI、MiniMax 與 MiniMax Voice ID 的專屬設定；此檔案不納入 Git。
@@ -11,6 +12,8 @@
 
 ### 驗證結果
 - 已確認七個指定環境變數都有值。
+- 已確認 `VITE_API_URL`、Supabase 前端設定與 Persona ID 都有值。
+- 已重新載入前端，登入後介面可正常顯示，瀏覽器沒有 console 錯誤。
 - 已確認 `.env` 未被 Git 追蹤，且符合 `.gitignore` 排除規則。
 
 ### 尚未完成／未驗證
