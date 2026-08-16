@@ -1,5 +1,27 @@
 # DEV LOG
 
+## 2026-08-16 — Session 06：修正 Voice Agent 外掛主程序註冊
+
+### 改動摘要
+修正 Soniox 與 OpenAI LiveKit 外掛第一次在背景工作程序載入，造成「Plugins must be registered on the main thread」並讓通話在 Agent 就緒前中斷的問題。三個 LiveKit 外掛現在都會在 Voice Agent 主程序註冊。
+
+### 修改檔案
+- `apps/voice-agent/src/voice_agent/worker.py` — 在主程序載入 Soniox、OpenAI 與 Silero 外掛。
+- `apps/voice-agent/tests/test_worker_plugin_registration.py` — 新增回歸測試，確保三個需要註冊的 LiveKit 外掛皆在主程序匯入。
+- `DEV_LOG.md` — 新增本次外掛註冊修正與驗證紀錄。
+
+### 驗證結果
+- 新回歸測試先確認修正前失敗，修正後通過。
+- Voice Agent 全部 52 項測試通過，且 Python 語法編譯檢查通過。
+- 重啟後 Voice Agent 已在主程序註冊 OpenAI、Silero、Soniox 外掛，並以 Howard 專屬名稱向 LiveKit 日本區完成註冊。
+- Core API 與 Voice Agent 本機連接埠維持正常運作。
+
+### 尚未完成／未驗證
+- 尚未在修正後啟動真實通話，以避免未經確認要求麥克風權限及使用外部語音服務；完整 STT、AI 與 TTS 流程仍待實測。
+
+### 下一步
+- [ ] 使用者在瀏覽器按下「重新連線」並允許麥克風後，驗證 Voice Agent 就緒與語音對話流程。
+
 ## 2026-08-16 — Session 05：隔離個人 Voice Agent 派送
 
 ### 改動摘要

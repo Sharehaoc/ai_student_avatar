@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 from dotenv import find_dotenv, load_dotenv
-from livekit.plugins import silero
+from livekit.plugins import openai, silero, soniox
 
 from voice_agent.core_client import CoreApiClient
 from voice_agent.orchestrator import VoiceSessionOrchestrator
