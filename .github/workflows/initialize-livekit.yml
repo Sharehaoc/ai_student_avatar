@@ -1,0 +1,20 @@
+name: 初始化 LiveKit Production Agent
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+
+jobs:
+  create:
+    uses: simon5168s5/ai-avatar-deployment-kit/.github/workflows/reusable-livekit-create.yml@d7cc155ae472df3fdd3cd73f6095d2edf04183ef
+    with:
+      voice-agent-directory: apps/voice-agent
+    secrets:
+      LIVEKIT_URL: ${{ secrets.LIVEKIT_URL }}
+      LIVEKIT_API_KEY: ${{ secrets.LIVEKIT_API_KEY }}
+      LIVEKIT_API_SECRET: ${{ secrets.LIVEKIT_API_SECRET }}
+      LIVEKIT_AGENT_SECRET_LIST: ${{ secrets.LIVEKIT_AGENT_SECRET_LIST }}

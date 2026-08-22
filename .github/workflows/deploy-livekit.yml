@@ -1,0 +1,31 @@
+name: 部署 LiveKit Production Agent
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - apps/voice-agent/**
+      - .github/workflows/deploy-livekit.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deployment-disabled:
+    name: 正式部署尚未啟用
+    if: vars.DEPLOYMENT_ENABLED != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "尚未完成平台設定，因此安全略過 LiveKit 正式部署。"
+
+  deploy:
+    if: vars.DEPLOYMENT_ENABLED == 'true'
+    uses: simon5168s5/ai-avatar-deployment-kit/.github/workflows/reusable-livekit-deploy.yml@d7cc155ae472df3fdd3cd73f6095d2edf04183ef
+    with:
+      voice-agent-directory: apps/voice-agent
+    secrets:
+      LIVEKIT_URL: ${{ secrets.LIVEKIT_URL }}
+      LIVEKIT_API_KEY: ${{ secrets.LIVEKIT_API_KEY }}
+      LIVEKIT_API_SECRET: ${{ secrets.LIVEKIT_API_SECRET }}
+      LIVEKIT_AGENT_SECRET_LIST: ${{ secrets.LIVEKIT_AGENT_SECRET_LIST }}

@@ -1,5 +1,32 @@
 # DEV LOG
 
+## 2026-08-22 — Session 12：安裝 Deployment Kit v1.0.3
+
+### 改動摘要
+在 `feature/deployment-kit` 分支安裝 Deployment Kit v1.0.3，加入可重現的 Render 與 LiveKit 部署設定。第一次部署尚未設定完成，因此不建立 `DEPLOYMENT_ENABLED`，正式 LiveKit 部署會安全略過。
+
+### 修改檔案
+- `.github/workflows/verify.yml` — 改為呼叫固定 v1.0.3 commit 的共用驗證 workflow。
+- `.github/workflows/initialize-livekit.yml` — 新增手動初始化 LiveKit Production Agent workflow。
+- `.github/workflows/deploy-livekit.yml` — 新增受 `DEPLOYMENT_ENABLED` 保護的正式部署 workflow。
+- `render.yaml` — 新增 Core API 與 Web 的 Render Blueprint；所有秘密欄位均要求於平台設定。
+- `apps/voice-agent/Dockerfile`、`apps/voice-agent/.dockerignore` — 新增 Voice Agent 容器建置設定。
+- `DEV_LOG.md` — 記錄本次安裝與驗證。
+
+### 驗證結果
+- Deployment Kit v1.0.3 固定使用 commit `d7cc155ae472df3fdd3cd73f6095d2edf04183ef`，沒有使用 `@main`。
+- 已確認 `verify`、`initialize-livekit`、`deploy-livekit`、`render.yaml`、Voice Agent Dockerfile 與 `.dockerignore` 均存在。
+- 已確認 GitHub Repository Variable 尚未建立 `DEPLOYMENT_ENABLED`，部署 workflow 預設安全略過。
+- `pnpm verify` 通過：TypeScript、Core API、Web Build 與既有測試均成功。
+- Voice Agent 暫存驗證環境通過：依賴檢查、54 項單元測試與 Python 編譯檢查均成功。
+
+### 尚未完成／未驗證
+- 尚未建立任何正式雲端資源、設定 GitHub Secrets、設定 Render 或執行 LiveKit 初始化。
+- 未執行正式部署；需在平台設定與驗收完成後才可啟用 `DEPLOYMENT_ENABLED=true`。
+
+### 下一步
+- [ ] 檢查並合併 Deployment Kit Pull Request 後，再進行 Supabase、LiveKit 與 Render 的平台設定。
+
 ## 2026-08-22 — Session 11：建立陪伴聊天型 AI 語音分身專案報告
 
 ### 改動摘要
