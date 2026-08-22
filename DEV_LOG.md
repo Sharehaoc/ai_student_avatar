@@ -1,5 +1,28 @@
 # DEV LOG
 
+## 2026-08-22 — Session 13：建立雲端 Supabase Auth 與資料保護基礎
+
+### 改動摘要
+建立 Howard 專屬的免費 Supabase 雲端專案，並依序套用專案既有的六份資料庫 migration。此設定建立 Supabase Auth 所需的使用者關聯、OWNER／VISITOR 角色資料模型、受保護的後臺資料結構，以及語音試聽限流。
+
+### 修改檔案
+- `DEV_LOG.md` — 記錄雲端 Supabase 專案與資料庫安全設定。
+
+### 驗證結果
+- 雲端 Supabase 專案已建立並顯示健康狀態。
+- 6 份 migration 均已套用完成。
+- 已確認 11 張 `public` 資料表皆啟用 RLS。
+- Browser Data API 對應資料表權限均被撤銷；資料必須透過已驗證的 Core API 存取。
+- 已執行 Supabase 安全掃描；「RLS 已啟用但沒有 policy」的提示符合本專案撤銷 Data API 權限、只允許後端服務角色存取的設計。
+
+### 尚未完成／未驗證
+- 尚未在雲端建立 OWNER 測試帳號、Persona 初始資料或執行真實登入。
+- 雲端 Core API 尚未部署，且 Supabase secret key、資料庫連線字串與部署平台設定均未寫入本機檔案或 Git。
+- 尚未設定正式網站網址與 Auth Redirect URL；需在 Render 網址確定後設定，避免登入回跳到錯誤網站。
+
+### 下一步
+- [ ] 部署 Core API 後，於部署平台的 Secret Manager 設定 Supabase 連線資訊，再做 OWNER／VISITOR 登入與路由隔離驗證。
+
 ## 2026-08-22 — Session 12：安裝 Deployment Kit v1.0.3
 
 ### 改動摘要
