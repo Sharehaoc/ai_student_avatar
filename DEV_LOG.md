@@ -1,5 +1,28 @@
 # DEV LOG
 
+## 2026-08-22 — Session 15：連接獨立 LiveKit Cloud Project
+
+### 改動摘要
+確認 Howard 帳號下的獨立 LiveKit Cloud Project 後，建立專供本專案伺服器使用的 API Key。LiveKit URL、API Key 與 API Secret 僅透過本機剪貼簿輸入，經格式清理後寫入受 Git 忽略的 `.env`，並同步至 GitHub Repository Secrets。未初始化 Production Agent，亦未建立或啟用 `DEPLOYMENT_ENABLED`。
+
+### 修改檔案
+- `.env` — 更新 `LIVEKIT_URL`、`LIVEKIT_API_KEY`、`LIVEKIT_API_SECRET`，並統一 `LIVEKIT_AGENT_NAME=flying-eagle-voice-agent`；此檔案受 Git 排除。
+- `DEV_LOG.md` — 記錄不含任何 LiveKit 值的連線與驗證結果。
+
+### 驗證結果
+- LiveKit Cloud Project 已確認屬於 Howard 已登入帳號；Project 名稱未作為 Agent 派工名稱使用。
+- 本機已確認 URL 為 `wss://`、API Key 與 API Secret 均非空，且未保留最外層引號或前後空白。
+- GitHub Repository Secrets 已建立：`LIVEKIT_URL`、`LIVEKIT_API_KEY`、`LIVEKIT_API_SECRET`。
+- 本機 `.env`、Render Blueprint 與 GitHub Repository Variable 均使用 `flying-eagle-voice-agent` 作為 `LIVEKIT_AGENT_NAME`。
+- `.env` 已確認受 Git 忽略；操作後剪貼簿已清除。
+
+### 尚未完成／未驗證
+- 尚未初始化或部署 LiveKit Production Agent，也未執行正式雲端語音通話。
+- `DEPLOYMENT_ENABLED` 仍未建立，部署 workflow 會維持安全略過。
+
+### 下一步
+- [ ] 在 Render 與其他必要雲端資源設定完成後，再取得明確同意執行 LiveKit Production Agent 初始化與端對端語音驗證。
+
 ## 2026-08-22 — Session 14：完成 Supabase 資料庫連線本機設定
 
 ### 改動摘要
