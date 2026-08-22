@@ -1,5 +1,27 @@
 # DEV LOG
 
+## 2026-08-22 — Session 16：準備 Render Blueprint 首次部署
+
+### 改動摘要
+確認 Render Blueprint 只定義 `ai-avatar-core` 與 `ai-avatar-web`，不建立 Render Postgres；將靜態網站服務明確固定為 Free 方案。Core 保留 Render 的動態 `PORT`、`API_HOST=0.0.0.0` 與 `/health` 檢查；Web 保留 `apps/web/dist` 發布路徑與 SPA rewrite。
+
+### 修改檔案
+- `render.yaml` — 為 `ai-avatar-web` 明確加入 `plan: free`。
+- `DEV_LOG.md` — 記錄首次部署前已驗證與待補齊項目。
+
+### 驗證結果
+- `render.yaml` 僅定義 Core 與 Web 兩項服務，未定義 `databases`。
+- 兩項服務皆設定 `autoDeployTrigger: checksPass`，且來源分支為 `main`。
+- 上一版 `main` 的 GitHub Checks 已通過；本次 Blueprint 提交待推送後重新驗證。
+
+### 尚未完成／未驗證
+- Render 尚未建立服務；需待 GitHub Checks 通過並安全補齊所有 `sync: false` 設定後才能首次部署。
+- Supabase 與 MiniMax 的部分部署設定尚未存在本機 `.env`，不可用空值建立服務。
+- 尚未初始化 LiveKit Production Agent，`DEPLOYMENT_ENABLED` 維持未建立。
+
+### 下一步
+- [ ] 等待本次 main Checks 通過，補齊 Render Secret 後建立 Blueprint 並完成 Core／Web 互相回填與健康檢查。
+
 ## 2026-08-22 — Session 15：連接獨立 LiveKit Cloud Project
 
 ### 改動摘要
