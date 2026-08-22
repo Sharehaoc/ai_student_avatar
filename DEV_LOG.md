@@ -1,5 +1,26 @@
 # DEV LOG
 
+## 2026-08-22 — Session 14：完成 Supabase 資料庫連線本機設定
+
+### 改動摘要
+重設 Supabase 雲端資料庫管理密碼，並僅在受 Git 忽略保護的本機 `.env` 建立資料庫連線設定。密碼與連線字串的實際值未寫入 Git、DEV LOG 或任何終端輸出。
+
+### 修改檔案
+- `.env` — 新增 `SUPABASE_DB_PASSWORD` 與 `DATABASE_URL`，並加入資料庫管理密碼用途註解；此檔案受 Git 排除。
+- `DEV_LOG.md` — 記錄不含機密值的設定與驗證結果。
+
+### 驗證結果
+- 已由 Supabase Dashboard 確認 Direct Connection 的主機、連接埠、資料庫與使用者格式；本機 `DATABASE_URL` 格式符合該專案。
+- 本機已確認 `SUPABASE_DB_PASSWORD` 與 `DATABASE_URL` 存在，且 `.env` 未被 Git 追蹤、受 `.gitignore` 排除。
+- 已清除作業期間使用的 Windows 剪貼簿密碼。
+
+### 尚未完成／未驗證
+- Supabase Direct Connection 預設採 IPv6；若部署環境僅支援 IPv4，需改用 Supabase 提供的 pooler 或另行啟用 IPv4 方案。
+- Site URL 與 Redirect URLs 仍待 Render Web 網址產生後回填。
+
+### 下一步
+- [ ] 完成 Render Web／Core API 設定後，回填 Supabase Auth URL Configuration 並執行真實登入流程驗證。
+
 ## 2026-08-22 — Session 13：建立雲端 Supabase Auth 與資料保護基礎
 
 ### 改動摘要
@@ -17,7 +38,7 @@
 
 ### 尚未完成／未驗證
 - 尚未在雲端建立 OWNER 測試帳號、Persona 初始資料或執行真實登入。
-- 雲端 Core API 尚未部署，且 Supabase secret key、資料庫連線字串與部署平台設定均未寫入本機檔案或 Git。
+- 雲端 Core API 尚未部署；Supabase 資料庫管理密碼與連線字串僅寫入受 Git 忽略的本機 `.env`，未寫入 Git。
 - 尚未設定正式網站網址與 Auth Redirect URL；需在 Render 網址確定後設定，避免登入回跳到錯誤網站。
 
 ### 下一步
