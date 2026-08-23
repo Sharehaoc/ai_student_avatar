@@ -1,5 +1,28 @@
 # DEV LOG
 
+## 2026-08-23 — Session 18：初始化 LiveKit Production Agent
+
+### 改動摘要
+以本機 `.env` 的最新 LiveKit Project 憑證同步 GitHub Repository Secrets，補齊 Voice Agent 必要的既有 MiniMax Group ID，並執行 LiveKit Production Agent 初始化。初始化流程已建立唯一的 Production Agent；由於 Repository 設定不允許 GitHub Actions 自動建立 Pull Request，改由已登入的 GitHub 帳戶手動建立同一個 `livekit.toml` PR，通過檢查後合併。
+
+### 修改檔案
+- `apps/voice-agent/livekit.toml` — 由 LiveKit 初始化流程產生並經 PR 合併；僅含部署設定，不含 Secret。
+- `DEV_LOG.md` — 記錄 LiveKit 初始化、PR 驗證與目前狀態。
+
+### 驗證結果
+- GitHub 已具備四個 LiveKit 相關 Secrets；實際值未輸出或提交。
+- `livekit.toml` 已確認不含 Secret，且其子網域與目前 LiveKit Project 相符。
+- PR 的 Python Voice Agent 與 TypeScript／Web Build 檢查皆通過後合併。
+- LiveKit Cloud 顯示唯一 Agent 的 Production 部署狀態為 `running`。
+- `DEPLOYMENT_ENABLED=false` 維持不變；`LIVEKIT_AGENT_NAME` 維持為 `flying-eagle-voice-agent`。
+
+### 尚未完成／未驗證
+- GitHub 初始化 workflow 的最終結果仍標示失敗，原因是 Repository 不允許 GitHub Actions 自動建立 PR；Agent 建立本身已成功，且 PR 已手動完成。
+- 尚未執行真實語音通話的端對端測試。
+
+### 下一步
+- [ ] 在不啟用 `DEPLOYMENT_ENABLED` 的前提下，執行一次受控的正式語音通話測試。
+
 ## 2026-08-23 — Session 17：修正 Render 靜態網站 Blueprint 方案欄位
 
 ### 改動摘要
