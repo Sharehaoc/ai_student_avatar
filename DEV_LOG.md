@@ -13,13 +13,17 @@
 ### 驗證結果
 - API TypeScript 型別檢查通過。
 - API Vitest：50 項測試通過。
-- 尚待 workflow 在 GitHub production 環境執行後驗證 OWNER 登入與 Persona 發布結果。
+- GitHub production 的初始化 workflow 已成功；Supabase 中已確認 1 個 OWNER、1 個 Persona 草稿與已發布版本。
+- Render Web 已以公開 Persona ID 重新部署；Render Core 已改用 Supabase Session Pooler，健康檢查回應 HTTP 200。
+- 已使用正式 Web 實際登入 OWNER、儲存草稿並發布 Persona v2。
+- 三個語音限制皆設為 5，Core 的正式語音總開關已設為 true。
+- GitHub 的 `DEPLOYMENT_ENABLED` 已設為 true；正式 LiveKit 部署 workflow 成功，唯一的 Agent 已回到 running。
 
 ### 尚未完成／未驗證
-- 尚未開啟 Render 的正式語音總開關，也尚未將 LiveKit 部署開關設為 true。
+- 尚未進行會實際使用麥克風與外部 STT／AI／TTS 額度的端對端語音通話。
 
 ### 下一步
-- [ ] 執行正式 OWNER 與 Persona workflow，回填公開 Persona ID，並完成登入與語音上線驗證。
+- [ ] 取得使用者同意後，以短時間真實通話驗證麥克風、STT、AI、TTS 與逐字稿完整流程。
 
 ## 2026-08-23 — Session 18：初始化 LiveKit Production Agent
 
