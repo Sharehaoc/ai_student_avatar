@@ -1,5 +1,26 @@
 # DEV LOG
 
+## 2026-08-23 — Session 19：正式 OWNER 與 Persona 初始化流程
+
+### 改動摘要
+新增只在 GitHub `production` 環境執行的 OWNER 與 Persona 初始化流程。流程使用 Supabase Auth 建立或更新管理員、建立租戶與 Persona 草稿，並發布一個 Persona 版本；敏感資料只從 GitHub Environment Secret 讀取。
+
+### 修改檔案
+- `apps/api/src/scripts/production-owner-persona-bootstrap.ts` — 正式環境初始化程式。
+- `apps/api/package.json` — 新增對應的執行指令。
+- `.github/workflows/initialize-production-owner-persona.yml` — 受 production Environment 保護的手動 workflow。
+
+### 驗證結果
+- API TypeScript 型別檢查通過。
+- API Vitest：50 項測試通過。
+- 尚待 workflow 在 GitHub production 環境執行後驗證 OWNER 登入與 Persona 發布結果。
+
+### 尚未完成／未驗證
+- 尚未開啟 Render 的正式語音總開關，也尚未將 LiveKit 部署開關設為 true。
+
+### 下一步
+- [ ] 執行正式 OWNER 與 Persona workflow，回填公開 Persona ID，並完成登入與語音上線驗證。
+
 ## 2026-08-23 — Session 18：初始化 LiveKit Production Agent
 
 ### 改動摘要

@@ -1,0 +1,32 @@
+name: 初始化正式 OWNER 與 Persona
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  initialize:
+    environment: production
+    runs-on: ubuntu-latest
+    outputs:
+      persona_id: ${{ steps.bootstrap.outputs.persona_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - id: bootstrap
+        run: pnpm --filter @flying-eagle/api exec tsx src/scripts/production-owner-persona-bootstrap.ts
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          OWNER_PASSWORD: ${{ secrets.OWNER_PASSWORD }}
+          MINIMAX_VOICE_ID: ${{ secrets.MINIMAX_VOICE_ID }}
+          MINIMAX_VOICE_MODEL: ${{ vars.MINIMAX_VOICE_MODEL }}

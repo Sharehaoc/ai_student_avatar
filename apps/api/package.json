@@ -7,6 +7,7 @@
     "dev": "tsx watch src/server.ts",
     "start": "tsx src/server.ts",
     "local:bootstrap": "tsx src/scripts/local-bootstrap.ts",
+    "production:bootstrap-owner": "tsx src/scripts/production-owner-persona-bootstrap.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
