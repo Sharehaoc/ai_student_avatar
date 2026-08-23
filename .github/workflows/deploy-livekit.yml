@@ -21,11 +21,36 @@ jobs:
 
   deploy:
     if: vars.DEPLOYMENT_ENABLED == 'true'
-    uses: simon5168s5/ai-avatar-deployment-kit/.github/workflows/reusable-livekit-deploy.yml@d7cc155ae472df3fdd3cd73f6095d2edf04183ef
-    with:
-      voice-agent-directory: apps/voice-agent
-    secrets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
       LIVEKIT_URL: ${{ secrets.LIVEKIT_URL }}
       LIVEKIT_API_KEY: ${{ secrets.LIVEKIT_API_KEY }}
       LIVEKIT_API_SECRET: ${{ secrets.LIVEKIT_API_SECRET }}
-      LIVEKIT_AGENT_SECRET_LIST: ${{ secrets.LIVEKIT_AGENT_SECRET_LIST }}
+      SECRET_LIST: ${{ secrets.LIVEKIT_AGENT_SECRET_LIST }}
+      VOICE_AGENT_DIRECTORY: apps/voice-agent
+      LIVEKIT_AGENT_ID: CA_pEEooDBu2APm
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: 確認 Agent 已完成首次註冊
+        run: test -f "$VOICE_AGENT_DIRECTORY/livekit.toml"
+      - name: 以完整清單同步 Agent Secrets
+        run: |
+          set -euo pipefail
+          curl -fsSL https://github.com/livekit/livekit-cli/releases/download/v2.18.2/lk_2.18.2_linux_amd64.tar.gz | tar -xz
+          secret_file="$RUNNER_TEMP/livekit-agent-secrets.env"
+          trap 'rm -f "$secret_file"' EXIT
+          printf '%s' "$SECRET_LIST" | tr ',' '\n' > "$secret_file"
+          test -s "$secret_file"
+          ./lk agent update-secrets --id "$LIVEKIT_AGENT_ID" --secrets-file "$secret_file" --overwrite "$VOICE_AGENT_DIRECTORY"
+      - name: 部署 Agent
+        uses: livekit/deploy-action@48cc4d2614132f7d67d04d38c62b47ba29c027e0 # v2.12.2
+        with:
+          OPERATION: deploy
+          WORKING_DIRECTORY: ${{ env.VOICE_AGENT_DIRECTORY }}
+      - name: 等待 Agent Running
+        uses: livekit/deploy-action@48cc4d2614132f7d67d04d38c62b47ba29c027e0 # v2.12.2
+        with:
+          OPERATION: status-retry
+          WORKING_DIRECTORY: ${{ env.VOICE_AGENT_DIRECTORY }}
+          TIMEOUT: 5m

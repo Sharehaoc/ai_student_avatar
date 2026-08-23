@@ -1,5 +1,25 @@
 # DEV LOG
 
+## 2026-08-23 — Session 07：同步正式 LiveKit Agent Secrets
+
+### 改動摘要
+將正式 Agent 的部署流程改為先以 GitHub Secret Manager 的完整清單覆蓋 Agent Secrets，再部署新版 Agent，避免雲端保留已不再使用的舊設定。
+
+### 修改檔案
+- `.github/workflows/deploy-livekit.yml` — 新增完整覆蓋的安全同步步驟與 Agent 部署步驟。
+
+### 驗證結果
+- 已確認 `apps/voice-agent/livekit.toml` 指向目前正式 LiveKit Project 與既有 Agent。
+- GitHub Actions 正式部署工作流程已成功完成。
+- LiveKit 顯示既有 Agent 為 Running，且以更新後的正式版本提供服務。
+- LiveKit Secrets 清單已不再顯示舊的 `MINIMAX_GROUP_ID` 欄位。
+
+### 尚未完成／未驗證
+- 尚未驗證：需要在瀏覽器實際發話一次，確認 TTS 音訊能正常播放。
+
+### 下一步
+- [ ] 進行一次正式語音通話測試。
+
 ## 2026-08-23 — Session 23：Storage 失敗安全診斷
 
 ### 改動摘要
