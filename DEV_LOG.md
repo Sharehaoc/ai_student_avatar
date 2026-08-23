@@ -4,9 +4,11 @@
 
 ### 改動摘要
 將正式 Agent 的部署流程改為先以 GitHub Secret Manager 的完整清單覆蓋 Agent Secrets，再部署新版 Agent，避免雲端保留已不再使用的舊設定。
+補充將 MiniMax TTS transport 固定為已驗證可回傳音訊的 HTTP 串流，避免自動選用 WebSocket transport。
 
 ### 修改檔案
 - `.github/workflows/deploy-livekit.yml` — 新增完整覆蓋的安全同步步驟與 Agent 部署步驟。
+- `.github/workflows/deploy-livekit.yml` — 將正式 MiniMax TTS transport 固定為 HTTP。
 
 ### 驗證結果
 - 已確認 `apps/voice-agent/livekit.toml` 指向目前正式 LiveKit Project 與既有 Agent。
