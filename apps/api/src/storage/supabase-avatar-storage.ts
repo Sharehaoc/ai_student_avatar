@@ -43,6 +43,10 @@ export class SupabaseAvatarStorage implements AvatarStorage {
       `/storage/v1/object/persona-avatars/${path}`,
       this.#supabaseUrl,
     );
+    // Send stable bytes instead of the incoming multipart File stream. Render's
+    // Node 24 runtime otherwise receives a Storage 400 for an otherwise valid
+    // image upload, while the same bytes succeed through the Storage API.
+    const content = new Uint8Array(await file.arrayBuffer());
     const response = await this.#fetcher(objectUrl.toString(), {
       method: "POST",
       headers: {
@@ -51,7 +55,7 @@ export class SupabaseAvatarStorage implements AvatarStorage {
         "content-type": file.type,
         "x-upsert": "true",
       },
-      body: file,
+      body: content,
       signal: AbortSignal.timeout(STORAGE_TIMEOUT_MS),
     });
     if (!response.ok) {
