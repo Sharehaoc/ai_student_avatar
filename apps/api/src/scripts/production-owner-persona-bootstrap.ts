@@ -140,6 +140,15 @@ async function main(): Promise<void> {
             updated_by_user_id = excluded.updated_by_user_id,
             updated_at = now()
       `;
+      await transaction`
+        insert into public.usage_policies (
+          tenant_id,
+          voice_enabled,
+          included_seconds,
+          tenant_concurrency_limit
+        ) values (${tenantId}::uuid, true, 3600, 1)
+        on conflict (tenant_id) do nothing
+      `;
       const published = await transaction<Array<{ persona_id: string }>>`
         select persona_id::text
         from public.publish_persona_draft(${owner.id}::uuid)

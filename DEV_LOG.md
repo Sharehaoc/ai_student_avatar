@@ -1,5 +1,25 @@
 # DEV LOG
 
+## 2026-08-23 — Session 20：正式語音政策初始化修正
+
+### 改動摘要
+端到端驗收發現正式環境沒有任何 `usage_policies` 資料列，導致已發布 Persona 無法建立語音對話。將正式 OWNER／Persona 初始化流程補齊與本機初始化相同的缺省語音政策建立步驟；若政策已存在，不會覆寫既有設定。
+
+### 修改檔案
+- `apps/api/src/scripts/production-owner-persona-bootstrap.ts` — 新租戶初始化時建立預設語音使用政策。
+- `DEV_LOG.md` — 記錄根因、修正與驗證結果。
+
+### 驗證結果
+- API TypeScript 型別檢查通過。
+- API Vitest：50 項測試通過。
+- 尚待執行正式初始化 workflow，確認政策建立與實際語音通話。
+
+### 尚未完成／未驗證
+- 尚未完成真實麥克風、STT、AI、TTS 的正式端到端通話。
+
+### 下一步
+- [ ] 推送修正並手動執行正式 OWNER／Persona 初始化 workflow，再重新驗收語音連線。
+
 ## 2026-08-23 — Session 19：正式 OWNER 與 Persona 初始化流程
 
 ### 改動摘要
