@@ -1,5 +1,29 @@
 # DEV LOG
 
+## 2026-08-23 — Session 22：正式端到端驗收紀錄
+
+### 改動摘要
+執行正式 Web、Core、Supabase Storage、LiveKit 與 GitHub Actions 的端到端驗收。頭像上傳在 Core 端仍收到 Supabase Storage HTTP 400；同一張測試圖片以本機服務端設定直接寫入 Storage 成功，但尚未取得可證實的 Render Core 與 Storage 差異。曾嘗試以原始位元組取代傳入檔案串流，實測未改善後已完整還原，未將猜測保留在正式程式。
+
+### 修改檔案
+- `apps/api/src/storage/supabase-avatar-storage.ts` — 曾進行並已還原的未驗證診斷修正；正式版本維持原行為。
+- `DEV_LOG.md` — 記錄正式驗收、失敗證據與已還原處置。
+
+### 驗證結果
+- GitHub 驗證 workflow 在還原提交上成功。
+- Render Core 已成功重新部署至還原提交，並回覆 `/health` HTTP 200。
+- Supabase Storage 記錄顯示 Core 的頭像上傳請求回覆 HTTP 400；本機同一 Storage 服務端請求回覆 HTTP 200。
+- 已確認 LiveKit Agent 正在執行，但真實通話的 TTS 尚未成功完成。
+
+### 尚未完成／未驗證
+- 管理員頭像上傳、發布及公開前臺同步尚未通過。
+- 真實 STT、AI、TTS 一輪與對話訊息完整寫入尚未通過；先前正式通話收到 Agent 回傳的 TTS pipeline error。
+- 免費 Render 方案不支援 Shell，無法在執行中服務內直接比對 Storage 請求。
+
+### 下一步
+- [ ] 取得可安全比對的 Render Core Storage 憑證／Storage 回應碼證據後，修正頭像上傳單一根因。
+- [ ] 取得 LiveKit Agent 的 MiniMax TTS 上游實際錯誤後，修正單一根因並重跑真實語音通話驗收。
+
 ## 2026-08-23 — Session 20：正式語音政策初始化修正
 
 ### 改動摘要
