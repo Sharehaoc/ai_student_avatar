@@ -51,6 +51,7 @@ import {
   InvalidAvatarFileError,
   validateAvatarFile,
 } from "./storage/avatar-file.js";
+import { AvatarStorageUploadError } from "./storage/supabase-avatar-storage.js";
 
 
 export interface AuthenticatedUser {
@@ -622,7 +623,20 @@ export function createApi(dependencies: ApiDependencies): Hono {
     if (!owner) {
       return context.json({ error: { code: "OWNER_STUDIO_NOT_FOUND" } }, 404);
     }
-    const uploaded = await dependencies.avatarStorage.upload(owner, avatar);
+    let uploaded: AvatarStorageUpload;
+    try {
+      uploaded = await dependencies.avatarStorage.upload(owner, avatar);
+    } catch (error) {
+      if (error instanceof AvatarStorageUploadError) {
+        console.error(JSON.stringify({
+          event: "avatar_storage_upload_failed",
+          status: error.status,
+          storageCode: error.storageCode,
+        }));
+        return context.json({ error: { code: "AVATAR_STORAGE_UPLOAD_FAILED" } }, 502);
+      }
+      throw error;
+    }
     const updated = await dependencies.ownerStudio.updateAvatarPath(
       authenticatedUser.userId,
       uploaded.path,

@@ -1,5 +1,25 @@
 # DEV LOG
 
+## 2026-08-23 — Session 23：Storage 失敗安全診斷
+
+### 改動摘要
+頭像上傳的正式 Core log 原本只保留 HTTP 500，無法判斷 Supabase Storage 的根因。補上只記錄 Storage HTTP 狀態與安全錯誤代碼的診斷，不記錄任何憑證、檔案內容或使用者資料。
+
+### 修改檔案
+- `apps/api/src/storage/supabase-avatar-storage.ts` — 將失敗的 Storage 回應轉成安全錯誤代碼。
+- `apps/api/src/app.ts` — 頭像上傳失敗時輸出安全診斷並回傳明確的 API 錯誤碼。
+- `DEV_LOG.md` — 記錄診斷目的與驗證結果。
+
+### 驗證結果
+- API TypeScript 型別檢查通過。
+- API Vitest：50 項測試通過。
+
+### 尚未完成／未驗證
+- 尚待部署後重試一次正式頭像上傳，取得 Supabase Storage 的實際安全錯誤代碼。
+
+### 下一步
+- [ ] 依 Storage 安全錯誤代碼修正單一根因並重驗頭像流程。
+
 ## 2026-08-23 — Session 22：正式端到端驗收紀錄
 
 ### 改動摘要

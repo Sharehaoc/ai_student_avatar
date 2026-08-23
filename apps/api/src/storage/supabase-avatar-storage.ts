@@ -19,6 +19,31 @@ const EXTENSIONS: Record<string, string> = {
 };
 const STORAGE_TIMEOUT_MS = 20_000;
 
+export class AvatarStorageUploadError extends Error {
+  constructor(
+    readonly status: number,
+    readonly storageCode: string,
+  ) {
+    super(`頭像上傳失敗（HTTP ${status}；${storageCode}）`);
+    this.name = "AvatarStorageUploadError";
+  }
+}
+
+function storageErrorCode(body: string): string {
+  try {
+    const parsed = JSON.parse(body) as { error?: unknown; code?: unknown };
+    const candidate = typeof parsed.error === "string"
+      ? parsed.error
+      : typeof parsed.code === "string"
+        ? parsed.code
+        : undefined;
+    if (candidate && /^[A-Z0-9_]{1,80}$/i.test(candidate)) return candidate;
+  } catch {
+    // Storage can return a non-JSON response. Keep the log safe and generic.
+  }
+  return "UNKNOWN_STORAGE_ERROR";
+}
+
 export class SupabaseAvatarStorage implements AvatarStorage {
   readonly #supabaseUrl: URL;
   readonly #secretKey: string;
@@ -55,7 +80,11 @@ export class SupabaseAvatarStorage implements AvatarStorage {
       signal: AbortSignal.timeout(STORAGE_TIMEOUT_MS),
     });
     if (!response.ok) {
-      throw new Error(`頭像上傳失敗（HTTP ${response.status}）`);
+      const body = await response.text().catch(() => "");
+      throw new AvatarStorageUploadError(
+        response.status,
+        storageErrorCode(body),
+      );
     }
     return {
       path,
