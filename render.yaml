@@ -51,7 +51,6 @@ services:
   - type: web
     name: ai-avatar-web
     runtime: static
-    plan: free
     branch: main
     rootDir: .
     autoDeployTrigger: checksPass

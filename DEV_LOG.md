@@ -1,5 +1,25 @@
 # DEV LOG
 
+## 2026-08-23 — Session 17：修正 Render 靜態網站 Blueprint 方案欄位
+
+### 改動摘要
+移除 `ai-avatar-web` 的 `plan: free`。Render 將此服務辨識為 `runtime: static` 的靜態網站，不接受 Web Service 的 `plan` 欄位；靜態網站仍可免費部署。
+
+### 修改檔案
+- `render.yaml` — 移除 `ai-avatar-web` 的不相容方案欄位。
+- `DEV_LOG.md` — 記錄 Blueprint 預覽頁實際回報的設定錯誤與修正。
+
+### 驗證結果
+- Render Blueprint 預覽頁實際回報：`services[1].plan no such plan free for service type web`。
+- 已依 Render 官方靜態網站 Blueprint 範例保留 `type: web`、`runtime: static`、`buildCommand` 與 `staticPublishPath`，且不指定 `plan`。
+
+### 尚未完成／未驗證
+- 修正尚待推送至 GitHub，並由 Render 預覽頁重新驗證。
+- Core 與 Web 尚未建立，環境變數、公開網址與健康檢查仍待後續部署。
+
+### 下一步
+- [ ] 推送本次修正後，重新開啟 Render Blueprint 預覽並完成第一次建立。
+
 ## 2026-08-22 — Session 16：準備 Render Blueprint 首次部署
 
 ### 改動摘要
