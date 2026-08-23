@@ -1,25 +1,5 @@
 # DEV LOG
 
-## 2026-08-23 — Session 21：正式頭像上傳相容性修正
-
-### 改動摘要
-正式端到端驗收發現管理員頭像上傳在 Render 的 Node 24 執行環境被 Supabase Storage 拒絕，但使用同一組服務端憑證與同一張圖片的原始位元組可成功寫入。將 Storage 上傳改為先將 HTTP multipart 檔案轉成原始位元組後送出，避免 Node 24 的檔案串流相容問題。
-
-### 修改檔案
-- `apps/api/src/storage/supabase-avatar-storage.ts` — 以穩定的原始位元組傳送 Storage 上傳內容。
-- `DEV_LOG.md` — 記錄正式驗收根因與修正。
-
-### 驗證結果
-- API TypeScript 型別檢查通過。
-- API Vitest：50 項測試通過。
-- 尚待 Render 部署此修正後，重測管理員頭像上傳、Persona 發布與公開前臺同步。
-
-### 尚未完成／未驗證
-- 尚未完成真實麥克風、STT、AI、TTS 的正式端到端通話。
-
-### 下一步
-- [ ] 部署頭像上傳修正並重新驗收 Storage、管理頁及公開前臺。
-
 ## 2026-08-23 — Session 20：正式語音政策初始化修正
 
 ### 改動摘要
